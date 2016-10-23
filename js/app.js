@@ -1,27 +1,55 @@
 let Calculators = new Map([
     ['UK', UK],
     ['NL', NL],
-    ['ALL', [UK, NL]],
 ]);
-
+let inputs;
 
 $(document).ready(function() {
 
-    $('select').material_select();
-    $("#calculate-button").click(function() {
-        getTaxResults();
-    });
-    bind();
+    //$("#edit-rec option:selected").removeAttr("selected");
+$('select').material_select();
+
+
+    inputs = new Vue({
+        el: '#inputs',
+        data: {
+            year_input: '123',
+            country: [],
+            result: []
+        },
+        computed: {
+            year_input_monthly: function() {
+                return Math.round(this.year_input / 12);
+            }
+        },
+        methods: {
+            calculate: function() {
+                console.log(this.country)
+                for (var i in this.country) {
+                    let calc = Calculators.get(this.country[i])
+                    calc.calculate(this.year_input)
+                    this.result.d = JSON.stringify(calc.result);
+
+                }
+
+            }
+        }
+    })
+
+
+
+
+
+
+
 
     function getTaxResults() {
-      $("#results").text("");
-        let yearInput = $("#year_amount").val();
-
+        $("#results").text("");
         $("#country option:selected").each(function(i) {
             let country = $(this).val();
             let usedCalc = Calculators.get(country);
             usedCalc.calculate(yearInput)
-            $("#results").append(country + ": "+ JSON.stringify(usedCalc.result) + "<br>");
+            $("#results").append(country + ": " + JSON.stringify(usedCalc.result) + "<br>");
         });
 
 
