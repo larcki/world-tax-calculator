@@ -7,91 +7,65 @@ let inputs;
 $(document).ready(function() {
 
     //$("#edit-rec option:selected").removeAttr("selected");
-$('select').material_select();
+    //$('select').material_select();
+
+
 
 
     inputs = new Vue({
-        el: '#inputs',
+        el: '#calculator',
         data: {
-            year_input: '123',
-            country: [],
-            result: []
+            year_input: '',
+            countries: []
         },
         computed: {
             year_input_monthly: function() {
-                return Math.round(this.year_input / 12);
-            }
-        },
-        methods: {
-            calculate: function() {
-                console.log(this.country)
-                for (var i in this.country) {
-                    let calc = Calculators.get(this.country[i])
-                    calc.calculate(this.year_input)
-                    this.result.d = JSON.stringify(calc.result);
-
+                if (this.year_input.length !== 0) {
+                    return Math.round(this.year_input / 12);
                 }
 
+            },
+            results: function() {
+                let tempArray = [];
+
+                if (this.countries.length === 0 || !this.year_input) {
+                    return tempArray;
+                }
+
+                for (var i in this.countries) {
+                    let country = this.countries[i];
+                    let usedCalc = Calculators.get(country);
+                    usedCalc.calculate(this.year_input)
+                    tempArray.push({
+                        country: country,
+                        grossYear: this.year_input,
+                        net_year: Math.round(usedCalc.result.netYear),
+                        net_month: usedCalc.result.netMonth
+                    })
+                    console.log(usedCalc.result)
+                }
+                return tempArray;
             }
+        },
+
+        components: {
+            'result-item': {
+                props: {
+                    country: String,
+                    grossYear: Number,
+                    netYear: Number,
+                    netMonth: Number
+                },
+                template: '<tr>' +
+                    '<td onClick="alert()">{{country}}</td>' +
+                    '<td>{{grossYear}}</td>' +
+                    '<td>{{netYear}}</td>' +
+                    '<td>{{netMonth}}</td>' +
+                    '</tr>'
+            },
         }
-    })
 
+    });
 
-
-
-
-
-
-
-    function getTaxResults() {
-        $("#results").text("");
-        $("#country option:selected").each(function(i) {
-            let country = $(this).val();
-            let usedCalc = Calculators.get(country);
-            usedCalc.calculate(yearInput)
-            $("#results").append(country + ": " + JSON.stringify(usedCalc.result) + "<br>");
-        });
-
-
-    }
-
-
-
-    function bind() {
-        $("#year_amount").keyup(function() {
-            var yearvalue = $("#year_amount").val()
-            console.log(yearvalue)
-            $("#month_amount").val(Math.round(yearvalue / 12));
-            $("#month_amount_label").addClass("active")
-        });
-        $("#year_amount").focusout(function() {
-            if (!$("#year_amount").val()) {
-                console.log("removeclass")
-                $("#month_amount_label").removeClass("active")
-            }
-            if ($("#year_amount").hasClass("valid")) {
-                $("#month_amount").addClass("valid");
-            } else {
-                $("#month_amount").removeClass("valid");
-            }
-        });
-
-        $("#month_amount").keyup(function() {
-            var yearvalue = $("#month_amount").val()
-            $("#year_amount").val(Math.round(yearvalue * 12));
-            $("#year_amount_label").addClass("active")
-        });
-        $("#month_amount").focusout(function() {
-            if (!$("#month_amount").val()) {
-                $("#year_amount_label").removeClass("active")
-            }
-            if ($("#month_amount").hasClass("valid")) {
-                $("#year_amount").addClass("valid");
-            } else {
-                $("#year_amount").removeClass("valid");
-            }
-        });
-
-    }
 
 });
