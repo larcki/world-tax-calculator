@@ -14,14 +14,14 @@ $(document).ready(function() {
     bind();
 
     function getTaxResults() {
-      $("#results").text("");
+        $("#results").text("");
         let yearInput = $("#year_amount").val();
 
         $("#country option:selected").each(function(i) {
             let country = $(this).val();
             let usedCalc = Calculators.get(country);
             usedCalc.calculate(yearInput)
-            $("#results").append(country + ": "+ JSON.stringify(usedCalc.result) + "<br>");
+            $("#results").append(country + ": " + JSON.stringify(usedCalc.result) + "<br>");
         });
 
 
