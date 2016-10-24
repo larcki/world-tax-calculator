@@ -10,8 +10,6 @@ $(document).ready(function() {
     //$('select').material_select();
 
 
-
-
     inputs = new Vue({
         el: '#calculator',
         data: {
@@ -56,16 +54,23 @@ $(document).ready(function() {
                     netYear: Number,
                     netMonth: Number
                 },
-                template: '<tr>' +
-                    '<td onClick="alert()">{{country}}</td>' +
+                template: '<tr id="target">' +
+                    '<td>{{country}}</td>' +
                     '<td>{{grossYear}}</td>' +
                     '<td>{{netYear}}</td>' +
-                    '<td>{{netMonth}}</td>' +
-                    '</tr>'
-            },
+                    '<td v-on:click="open(this)">{{netMonth}}</td>' +
+                    '</tr>',
+                methods: {
+                    open: function(value) {
+                        console.log(value)
+                    }
+                }
+            }
         }
 
     });
+
+
 
 
 });
