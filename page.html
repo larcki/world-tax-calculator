@@ -60,23 +60,39 @@
 
         <br><br>
 
-        <table class="highlight">
-            <thead>
-                <tr>
-                    <th data-field="id">Country</th>
-                    <th data-field="gross-year" class="padding-right-70">Gross per year</th>
-                    <th data-field="net-year">Net per year</th>
-                    <th data-field="net-month">Net per month</th>
-                </tr>
-            </thead>
-            <tbody>
-              <tr is="result-item" v-for="result in results"
-                :country="result.country"
-                :gross-year="result.grossYear"
-                :net-year="result.net_year"
-                :net-month="result.net_month"> </tr>
-            </tbody>
-        </table>
+        <th data-field="id">Country</th>
+        <th data-field="gross-year" class="padding-right-70">Gross per year</th>
+        <th data-field="net-year">Net per year</th>
+        <th data-field="net-month">Net per month</th>
+        <ul class="collapsible" data-collapsible="expandable">
+            <result-item v-for="result in results"
+                         :country="result.country"
+                         :gross-year="result.grossYear"
+                         :net-year="result.net_year"
+                         :net-month="result.net_month" ></result-item>
+
+        </ul>
+
+
+
+
+        <!--<table class="highlight">-->
+            <!--<thead>-->
+                <!--<tr>-->
+                    <!--<th data-field="id">Country</th>-->
+                    <!--<th data-field="gross-year" class="padding-right-70">Gross per year</th>-->
+                    <!--<th data-field="net-year">Net per year</th>-->
+                    <!--<th data-field="net-month">Net per month</th>-->
+                <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+              <!--<tr is="result-item" v-for="result in results"-->
+                <!--:country="result.country"-->
+                <!--:gross-year="result.grossYear"-->
+                <!--:net-year="result.net_year"-->
+                <!--:net-month="result.net_month"> </tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
 
     </div>
     <br><br>

@@ -5,15 +5,18 @@ Vue.components("result-item", {
         netYear: Number,
         netMonth: Number
     },
-    template: '<tr>' +
-    '<td v-on:click="shit()">{{country}}<div id="slide" style="height: 40px; background-color: #00695c"></div></td>' +
+    template: '<li>' +
+    '<div class="collapsible-header">' +
+    '<td>{{country}}</td>' +
     '<td>{{grossYear}}</td>' +
     '<td>{{netYear}}</td>' +
     '<td>{{netMonth}}</td>' +
-    '</tr>',
+    '</div>' +
+    '<div class="collapsible-body" style="background-color: #cfd8dc"><p>{{country}} specific options</p></div>' +
+    '</li>',
     methods: {
-        shit: function () {
-            console.log("asdijjdsiajai")
+        open: function (value) {
+            console.log(value)
         }
     }
 })
