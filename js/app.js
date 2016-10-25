@@ -1,12 +1,12 @@
-let inputs;
+let commonInput;
 
 $(document).ready(function () {
 
-    inputs = new Vue({
-        el: '#calculator',
+    commonInput = new Vue({
+        el: '#common-input',
         data: {
-            year_input: 30000,
-            countries: ['NL']
+            year_input: '',
+            countries: []
         },
         computed: {
             year_input_monthly: function () {
@@ -48,13 +48,12 @@ Vue.component("result-item", {
     props: {
         data: Object
     },
-    data: function () {
-        return {
-            countryComponent: CountryComponents.get(this.data.country)
+    computed: {
+        countryComponent: function () {
+            return CountryComponents.get(this.data.country)
         }
     }
 });
-
 
 function Calculator(country, instance, settings) {
 
@@ -93,65 +92,13 @@ let NLCalculator = new Calculator('NL', NL, {
     holidayAllowance: true
 });
 
-
-
-//let UKCalculator = new Vue({
-//    data: {
-//        country: 'UK',
-//        yearlyAmount: 0,
-//    },
-//    computed: {
-//        breakdown: function () {
-//            this.calculate(this.yearlyAmount);
-//            return UK.breakdown;
-//        },
-//        summary: function () {
-//            return {
-//                country: 'UK',
-//                grossYear: this.breakdown.grossYear,
-//                net_year: Math.round(this.breakdown.netYear),
-//                net_month: this.breakdown.netMonth
-//            }
-//        }
-//    },
-//    methods: {
-//        calculate: function () {
-//            UK.calculate(this.yearlyAmount);
-//        }
-//    }
-//});
-
-
-//let NLCalculator = new Vue({
-//    data: {
-//        country: 'NL',
-//        yearlyAmount: 0,
-//        ruling30: true,
-//        holidayAllowance: true
-//    },
-//    computed: {
-//        breakdown: function () {
-//            this.calculate(this.yearlyAmount);
-//            return NL.breakdown;
-//        },
-//        summary: function () {
-//            return {
-//                country: 'NL',
-//                grossYear: this.breakdown.grossYear,
-//                net_year: Math.round(this.breakdown.netYear),
-//                net_month: this.breakdown.netMonth
-//            }
-//        }
-//    },
-//    methods: {
-//        calculate: function () {
-//            NL.calculate(this.yearlyAmount, this.holidayAllowance, this.ruling30);
-//        }
-//    }
-//});
+let Calculators = new Map([
+    ['NL', NLCalculator],
+    ['UK', UKCalculator],
+]);
 
 let NLComponent = Vue.extend({
-    template: '<p> this is NL specific component {{settings.ruling30}} </p>',
+    template: '<div><input type="checkbox" id="test5" v-model="settings.ruling30"/> <label for="test5">30% Ruling</label></div>',
     data: function () {
         return NLCalculator;
     }
@@ -163,11 +110,6 @@ let UKComponent = Vue.extend({
         return UKCalculator;
     }
 });
-
-let Calculators = new Map([
-    ['NL', NLCalculator],
-    ['UK', UKCalculator],
-]);
 
 let CountryComponents = new Map([
     ['UK', UKComponent],
