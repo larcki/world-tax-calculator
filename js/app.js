@@ -1,134 +1,177 @@
-let Calculators = new Map([
-    ['UK', UK],
-    ['NL', NL],
-]);
 let inputs;
 
-var eventBus = new Vue()
-
 $(document).ready(function () {
-
-    //$("#edit-rec option:selected").removeAttr("selected");
-    //$('select').material_select();
-
-    eventBus.$on('30-ruling', function (value) {
-        inputs.ruling = value; 
-    })
 
     inputs = new Vue({
         el: '#calculator',
         data: {
             year_input: 30000,
-            countries: ['NL'],
-            ruling: true
+            countries: ['NL']
         },
         computed: {
             year_input_monthly: function () {
                 if (this.year_input.length !== 0) {
                     return Math.round(this.year_input / 12);
                 }
-
             },
             results: function () {
                 let tempArray = [];
-
                 if (this.countries.length === 0 || !this.year_input) {
                     return tempArray;
                 }
-
                 for (var i in this.countries) {
                     let country = this.countries[i];
-                    let usedCalc = Calculators.get(country);
-                    usedCalc.calculate(this.year_input, true, this.ruling)
-                    tempArray.push({
-                        country: country,
-                        grossYear: this.year_input,
-                        net_year: Math.round(usedCalc.result.netYear),
-                        net_month: usedCalc.result.netMonth
-                    })
-                    console.log(usedCalc.result)
+                    var calcInUse = Calculators.get(country);
+                    calcInUse.yearlyAmount = this.year_input;
+                    tempArray.push(calcInUse);
                 }
                 return tempArray;
             }
-        },
-
-        //components: {
-        //    'result-item': {
-        //        props: {
-        //            country: String,
-        //            grossYear: Number,
-        //            netYear: Number,
-        //            netMonth: Number
-        //        },
-        //        template: '<li>' +
-        //        '<div class="collapsible-header">' +
-        //        '<td>{{country}}</td>' +
-        //        '<td>{{grossYear}}</td>' +
-        //        '<td>{{netYear}}</td>' +
-        //        '<td>{{netMonth}}</td>' +
-        //        '</div>' +
-        //        '<div class="collapsible-body" style="background-color: #cfd8dc"><p>{{country}} specific options</p></div>' +
-        //        '</li>',
-        //        methods: {
-        //            open: function (value) {
-        //                console.log(value)
-        //            }
-        //        }
-        //    }
-        //}
-
+        }
 
     });
 
     $('.collapsible').collapsible({
-        accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        accordion: false
     });
 
 });
 
 Vue.component("result-item", {
-    props: {
-        country: String,
-        grossYear: Number,
-        netYear: Number,
-        netMonth: Number
-    },
     template: '<li>' +
-    '<div class="collapsible-header">' +
-    '<td>{{country}}</td>' +
-    '<td>{{grossYear}}</td>' +
-    '<td>{{netYear}}</td>' +
-    '<td>{{netMonth}}</td>' +
+    '<div class="collapsible-header">{{data.country}} {{data.yearlyAmount}} {{data.summary.net_year}} {{data.summary.net_month}}</div>' +
+    '<div class="collapsible-body" style="background-color: lightcyan">' +
+    '<p>Common stuff for all controls</p>' +
+    '<component v-bind:is="countryComponent"></component>' +
     '</div>' +
-    '<item-options :typex="country" ></item-options>' +
     '</li>',
-    methods: {
-        open: function (value) {
-            console.log(value)
-        }
-    }
-});
-
-
-Vue.component("item-options", {
     props: {
-        typex: String,
-        is30Ruling: Boolean,
-        isHolidayAllowance: Boolean
+        data: Object
     },
-    data: function() {
+    data: function () {
         return {
-            is30RulingData: this.is30Ruling
-        }
-    },
-    template: '<div class="collapsible-body" style="background-color: #cfd8dc">' +
-    '<p>{{typex}} specific options</p>' +
-    '<p> <input v-model="is30RulingData" v-on:change="change" type="checkbox" id="test5" /> <label for="test5">30% Ruling</label> </p>' +
-    '</div>',
-    methods: {
-        change: function () {
-            console.log("ruling changed!!")
-            eventBus.$emit('30-ruling', this.is30RulingData);
+            countryComponent: CountryComponents.get(this.data.country)
         }
     }
 });
+
+
+function Calculator(country, instance, settings) {
+
+    return new Vue({
+        data: {
+            country: country,
+            instance: instance,
+            settings: settings,
+            yearlyAmount: 0
+        },
+        computed: {
+            breakdown: function () {
+                this.calculate(this.yearlyAmount);
+                return this.instance.breakdown;
+            },
+            summary: function () {
+                return {
+                    country: this.country,
+                    grossYear: this.breakdown.grossYear,
+                    net_year: Math.round(this.breakdown.netYear),
+                    net_month: this.breakdown.netMonth
+                }
+            }
+        },
+        methods: {
+            calculate: function () {
+                this.instance.calculate(this.yearlyAmount, this.settings);
+            }
+        }
+    })
+}
+
+let UKCalculator = new Calculator('UK', UK);
+let NLCalculator = new Calculator('NL', NL, {
+    ruling30: true,
+    holidayAllowance: true
+});
+
+
+
+//let UKCalculator = new Vue({
+//    data: {
+//        country: 'UK',
+//        yearlyAmount: 0,
+//    },
+//    computed: {
+//        breakdown: function () {
+//            this.calculate(this.yearlyAmount);
+//            return UK.breakdown;
+//        },
+//        summary: function () {
+//            return {
+//                country: 'UK',
+//                grossYear: this.breakdown.grossYear,
+//                net_year: Math.round(this.breakdown.netYear),
+//                net_month: this.breakdown.netMonth
+//            }
+//        }
+//    },
+//    methods: {
+//        calculate: function () {
+//            UK.calculate(this.yearlyAmount);
+//        }
+//    }
+//});
+
+
+//let NLCalculator = new Vue({
+//    data: {
+//        country: 'NL',
+//        yearlyAmount: 0,
+//        ruling30: true,
+//        holidayAllowance: true
+//    },
+//    computed: {
+//        breakdown: function () {
+//            this.calculate(this.yearlyAmount);
+//            return NL.breakdown;
+//        },
+//        summary: function () {
+//            return {
+//                country: 'NL',
+//                grossYear: this.breakdown.grossYear,
+//                net_year: Math.round(this.breakdown.netYear),
+//                net_month: this.breakdown.netMonth
+//            }
+//        }
+//    },
+//    methods: {
+//        calculate: function () {
+//            NL.calculate(this.yearlyAmount, this.holidayAllowance, this.ruling30);
+//        }
+//    }
+//});
+
+let NLComponent = Vue.extend({
+    template: '<p> this is NL specific component {{settings.ruling30}} </p>',
+    data: function () {
+        return NLCalculator;
+    }
+});
+
+let UKComponent = Vue.extend({
+    template: '<p> this is UK specific component </p>',
+    data: function () {
+        return UKCalculator;
+    }
+});
+
+let Calculators = new Map([
+    ['NL', NLCalculator],
+    ['UK', UKCalculator],
+]);
+
+let CountryComponents = new Map([
+    ['UK', UKComponent],
+    ['NL', NLComponent]
+]);
+
+

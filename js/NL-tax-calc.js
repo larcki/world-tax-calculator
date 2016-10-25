@@ -1,4 +1,4 @@
-var NL = (function() {
+var NL = (function () {
 
     let output = {
         generalCredit: 0,
@@ -7,10 +7,13 @@ var NL = (function() {
         netYear: 0,
         netMonth: 0,
         incomeTax: 0,
-        taxableYear: 0
+        taxableYear: 0,
+        grossYear: 0
     };
 
-    var calculate = function calculate(inputAmount, inputAllowance, inputRuling) {
+    var calculate = function calculate(inputAmount, settings) {
+        let inputAllowance = settings.holidayAllowance;
+        let inputRuling = settings.ruling30;
         console.log("NL: calculating from values, amount: " + inputAmount + ", allowance:" + inputAllowance + ", ruling:" + inputRuling);
         let grossYear = inputAmount || 0;
         if (inputAllowance) {
@@ -27,6 +30,7 @@ var NL = (function() {
         output.netYear += output.generalCredit + output.labourCredit;
         output.netMonth = ~~(output.netYear / 12);
         output.incomeTax = getTaxAmount(output.taxableYear);
+        output.grossYear = inputAmount
     }
 
 
@@ -86,7 +90,7 @@ var NL = (function() {
 
     return {
         calculate: calculate,
-        result: output
+        breakdown: output,
     }
 
 })();

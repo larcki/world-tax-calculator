@@ -1,4 +1,4 @@
-var UK = (function() {
+var UK = (function () {
 
     let output = {
         grossMonth: 0,
@@ -6,7 +6,8 @@ var UK = (function() {
         netMonth: 0,
         incomeTax: 0,
         taxableYear: 0,
-        nationalInsurance: 0
+        nationalInsurance: 0,
+        grossYear: 0,
     };
 
     var calculate = function calculate(inputAmount) {
@@ -18,6 +19,7 @@ var UK = (function() {
         output.nationalInsurance = getNationalInsurance(output.taxableYear);
         output.netMonth = ~~(output.netYear / 12);
         output.incomeTax = getTaxAmount(output.taxableYear);
+        output.grossYear = inputAmount
     }
 
     function getNationalInsurance(taxableIncome = 0) {
@@ -65,7 +67,7 @@ var UK = (function() {
 
     return {
         calculate: calculate,
-        result: output
+        breakdown: output
     }
 
 })();
