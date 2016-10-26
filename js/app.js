@@ -1,12 +1,24 @@
 let commonInput;
 
+function swapem() {
+
+    if ($('#year').hasClass("fadeInUp")) {
+        $('#year').addClass("animated fadeInDown")
+        $('#month').addClass("animated fadeInUp")
+    } else {
+        $('#year').addClass("animated fadeInUp")
+        $('#month').addClass("animated fadeInDown")
+    }
+};
+
 $(document).ready(function () {
+
 
     commonInput = new Vue({
         el: '#common-input',
         data: {
-            year_input: '',
-            countries: []
+            year_input: 50000,
+            countries: ['NL', 'UK']
         },
         computed: {
             year_input_monthly: function () {
@@ -40,7 +52,7 @@ $(document).ready(function () {
 Vue.component("result-item", {
     template: '<li>' +
     '<div class="collapsible-header">{{data.country}} {{data.yearlyAmount}} {{data.summary.net_year}} {{data.summary.net_month}}</div>' +
-    '<div class="collapsible-body" style="background-color: lightcyan">' +
+    '<div class="collapsible-body">' +
     '<p>Common stuff for all controls</p>' +
     '<component v-bind:is="countryComponent"></component>' +
     '</div>' +
@@ -92,11 +104,6 @@ let NLCalculator = new Calculator('NL', NL, {
     holidayAllowance: true
 });
 
-let Calculators = new Map([
-    ['NL', NLCalculator],
-    ['UK', UKCalculator],
-]);
-
 let NLComponent = Vue.extend({
     template: '<div><input type="checkbox" id="test5" v-model="settings.ruling30"/> <label for="test5">30% Ruling</label></div>',
     data: function () {
@@ -110,6 +117,11 @@ let UKComponent = Vue.extend({
         return UKCalculator;
     }
 });
+
+let Calculators = new Map([
+    ['NL', NLCalculator],
+    ['UK', UKCalculator],
+]);
 
 let CountryComponents = new Map([
     ['UK', UKComponent],

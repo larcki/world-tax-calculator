@@ -1,3 +1,26 @@
 .padding-right-70 {
-  padding-right: 70px;
+    padding-right: 70px;
+}
+
+.collapsible {
+    box-shadow: none;
+    border-left: none;
+    border-right: none;
+}
+
+.logo-first {
+    color: #D99594;
+
+}
+
+.logo-sec {
+    color: #365F91;
+}
+
+.logo-last {
+    color: #C2D69B;
+}
+
+.ani {
+    animation-duration: 400ms !important;
 }
