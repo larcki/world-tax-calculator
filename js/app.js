@@ -13,7 +13,6 @@ function swapem() {
 
 $(document).ready(function () {
 
-
     commonInput = new Vue({
         el: '#common-input',
         data: {
@@ -43,10 +42,37 @@ $(document).ready(function () {
 
     });
 
+
+    $("#month").click(function() {
+        $('#disabled').removeAttr('disabled');
+        $('#year_amount').prop('disabled', true);
+    });
+
     $('.collapsible').collapsible({
         accordion: false
     });
 
+});
+
+Vue.component("salary-input", {
+    template: '<div><div class="row"> ' +
+    '<div class="col s4"> <a onclick="swapem()" class="waves-effect red lighten-2 btn">Per month?</a> </div> </div> ' +
+    '<div id="year" class="row ani"> <div class="input-field col s12 m6 l6"> ' +
+        '<input v-model="year_input" id="year_amount" type="number" class="validate" step=1000> ' +
+        '<label id=year_amount_label for="year_amount">Per year</label> ' +
+    '</div> </div> ' +
+    '<div id="month" class="row ani"> <div class="input-field col s12 m6 l6"> ' +
+        '<input disabled v-model="year_input_monthly" id="disabled" type="text" class="validate"> ' +
+        '<label for="disabled">Per Month</label> ' +
+    '</div> </div></div>',
+    props: {
+        data: Object
+    },
+    computed: {
+        countryComponent: function () {
+            return CountryComponents.get(this.data.country)
+        }
+    }
 });
 
 Vue.component("result-item", {
