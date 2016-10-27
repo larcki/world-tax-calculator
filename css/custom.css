@@ -8,6 +8,11 @@
     border-right: none;
 }
 
+.collapsible-header {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .logo-first {
     color: #D99594;
 
@@ -23,4 +28,11 @@
 
 .ani {
     animation-duration: 400ms !important;
+}
+
+.breakdown-row {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    border-bottom: 1px solid #ddd;
 }
