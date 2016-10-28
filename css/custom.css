@@ -36,3 +36,26 @@
     padding: 10px 0 10px 0;
     /*border-bottom: 1px solid #ddd;*/
 }
+
+.result-title {
+    /*border-top: 1px solid #ddd;*/
+    /*padding-top: 20px*/
+
+}
+
+.icon-UK {
+    background: url(../icons/United-Kingdom.png) no-repeat;
+    text-indent: 75px;
+    height: 47px;
+    width: 24% !important;
+    margin-left: 1% !important;
+}
+
+.icon-NL {
+    background: url(../icons/Netherlands.png) no-repeat;
+    text-indent: 75px;
+    height: 47px;
+    width: 24% !important;
+    margin-left: 1% !important;
+}
+

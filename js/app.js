@@ -13,6 +13,7 @@ function swapem() {
 
 $(document).ready(function () {
 
+
     commonInput = new Vue({
         el: '#common-input',
         data: {
@@ -42,7 +43,6 @@ $(document).ready(function () {
 
     });
 
-
     $("#month").click(function () {
         $('#disabled').removeAttr('disabled');
         $('#year_amount').prop('disabled', true);
@@ -56,13 +56,13 @@ $(document).ready(function () {
 
 Vue.component("result-item", {
     template: '<li>' +
-    '<div class="collapsible-header">' +
-    '<div class="col s3">{{data.country}}</div>' +
+    '<div class="collapsible-header row">' +
+    '<div class="col s3" v-bind:class="styleClass">{{data.country}}</div>' +
     '<div class="col s3">{{data.yearlyAmount}}</div>' +
     '<div class="col s3">{{data.summary.net_year}}</div>' +
     '<div class="col s3">{{data.summary.net_month}}</div>' +
     '</div>' +
-    '<div class="collapsible-body">' +
+    '<div class="collapsible-body row">' +
     '<component v-bind:is="countryComponent"></component>' +
     '</div>' +
     '</li>',
@@ -72,6 +72,9 @@ Vue.component("result-item", {
     computed: {
         countryComponent: function () {
             return CountryComponents.get(this.data.country)
+        },
+        styleClass: function () {
+            return "icon-" + this.data.country;
         }
     }
 });
@@ -128,20 +131,20 @@ let NLCalculator = new Calculator('NL', NL, {
 let NLComponent = Vue.extend({
     template: '<div class="row" style="padding:20px">' +
     '<div class="col s6">' +
-        '<breakdown-row title="Taxable Income" :value="breakdown.taxableYear" ></breakdown-row>' +
-        '<breakdown-row title="Income Tax" :value="breakdown.incomeTax" ></breakdown-row>' +
-        '<breakdown-row title="General Tax Credit" :value="breakdown.generalCredit" ></breakdown-row>' +
-        '<breakdown-row title="Labour Tax Credit" :value="breakdown.labourCredit" ></breakdown-row>' +
-        '<breakdown-row title="Net Income" :value="breakdown.netYear" ></breakdown-row>' +
+    '<breakdown-row title="Taxable Income" :value="breakdown.taxableYear" ></breakdown-row>' +
+    '<breakdown-row title="Income Tax" :value="breakdown.incomeTax" ></breakdown-row>' +
+    '<breakdown-row title="General Tax Credit" :value="breakdown.generalCredit" ></breakdown-row>' +
+    '<breakdown-row title="Labour Tax Credit" :value="breakdown.labourCredit" ></breakdown-row>' +
+    '<breakdown-row title="Net Income" :value="breakdown.netYear" ></breakdown-row>' +
     '</div>' +
     '<div class="input-field col s6">' +
     '<div class="row">' +
-        '<input type="checkbox" class="filled-in" id="test5" v-model="settings.ruling30"/>' +
-        '<label for="test5">30% Ruling</label>' +
+    '<input type="checkbox" class="filled-in" id="test5" v-model="settings.ruling30"/>' +
+    '<label for="test5">30% Ruling</label>' +
     '</div>' +
     '<div class="row">' +
-        '<input type="checkbox" class="filled-in" id="test6" v-model="settings.holidayAllowance"/>' +
-        '<label for="test6">Holiday Allowance</label>' +
+    '<input type="checkbox" class="filled-in" id="test6" v-model="settings.holidayAllowance"/>' +
+    '<label for="test6">Holiday Allowance</label>' +
     '</div>' +
     '</div>' +
     '</div>',
@@ -152,7 +155,14 @@ let NLComponent = Vue.extend({
 
 
 let UKComponent = Vue.extend({
-    template: '<p> this is UK specific component </p>',
+    template: '<div class="row" style="padding:20px">' +
+    '<div class="col s6">' +
+    '<breakdown-row title="Taxable Income" :value="breakdown.taxableYear"></breakdown-row>' +
+    '<breakdown-row title="Income Tax" :value="breakdown.incomeTax" ></breakdown-row>' +
+    '<breakdown-row title="National Insurance" :value="breakdown.nationalInsurance" ></breakdown-row>' +
+    '<breakdown-row title="Net Income" :value="breakdown.netYear" ></breakdown-row>' +
+    '</div>' +
+    '</div>',
     data: function () {
         return UKCalculator;
     }

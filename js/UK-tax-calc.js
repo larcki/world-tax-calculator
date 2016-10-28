@@ -13,10 +13,10 @@ var UK = (function () {
     var calculate = function calculate(inputAmount) {
         console.log("UK: calculating from values, amount: " + inputAmount);
         let grossYear = inputAmount || 0;
-        output.taxableYear = grossYear;
+        output.taxableYear = grossYear - 11000;
         output.grossMonth = ~~(grossYear / 12);
-        output.netYear = grossYear - getTaxAmount(output.taxableYear) - getNationalInsurance(output.taxableYear);
-        output.nationalInsurance = getNationalInsurance(output.taxableYear);
+        output.netYear = grossYear - getTaxAmount(output.taxableYear) - getNationalInsurance(grossYear);
+        output.nationalInsurance = getNationalInsurance(grossYear);
         output.netMonth = ~~(output.netYear / 12);
         output.incomeTax = getTaxAmount(output.taxableYear);
         output.grossYear = inputAmount
@@ -46,12 +46,12 @@ var UK = (function () {
     function getTaxAmount(taxableIncome = 0) {
         //TODO:  no personal allowance for over 120.000!
         const taxAmountPeriods = [
-            11000, // 0 - 19,922
+            //11000, // 0 - 19,922
             32000, // 33,715 - 19,922
             107000, // 66,421 - 33,715
             Infinity
         ];
-        let taxRates = [0, .20, .40, .45];
+        let taxRates = [.20, .40, .45];
         let taxAmount = 0;
         for (let i = 0; i < taxRates.length; i++) {
             if (taxableIncome - taxAmountPeriods[i] < 0) {

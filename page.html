@@ -23,7 +23,8 @@
 
 <nav style="background-color: white; font-weight: bold;" role="navigation">
     <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo center animated fadeIn"><span class="logo-first">The</span><span
+        <a id="logo-container" href="#" class="brand-logo animated fadeIn"><span
+                class="logo-first">The</span><span
                 class="logo-sec">Expat</span><span
                 class="logo-last">Tax</span></a>
     </div>
@@ -49,15 +50,6 @@
                         <label id=year_amount_label for="year_amount">Per year</label>
                     </div>
 
-                    <div class="input-field col s4 m2 l1">
-                        <select class="browser-default">
-                            <option selected value="1">EUR</option>
-                            <option value="2">USD</option>
-                            <option value="3">GBP</option>
-                        </select>
-                    </div>
-
-
                 </div>
 
                 <div id="month" class="row ani">
@@ -78,7 +70,8 @@
 
             </form>
             <br>
-            <div class="col s12" style="font-weight: bold;">
+
+            <div class="row" style="font-weight: bold;">
                 <div class="col s3">
                     Country
                 </div>
@@ -92,11 +85,11 @@
                     Net per month
                 </div>
             </div>
-            <div class="input-field col s12">
+            <!--<div class="row">-->
                 <ul class="collapsible" data-collapsible="expandable">
                     <result-item v-for="result in results" :data="result"></result-item>
                 </ul>
-            </div>
+            <!--</div>-->
 
         </div>
     </div>
