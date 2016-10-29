@@ -1,96 +1,95 @@
 var NL = (function () {
 
-    let output = {
-        generalCredit: 0,
-        labourCredit: 0,
-        grossMonth: 0,
-        netYear: 0,
-        netMonth: 0,
-        incomeTax: 0,
-        taxableYear: 0,
-        grossYear: 0
+    const taxBrackets = new Map([
+        [19922, {normal: .3655, noSocialSecurity: .0835}],
+        [13793, {normal: .404, noSocialSecurity: .1385}],
+        [32697, {normal: .404, noSocialSecurity: .404}],
+        [Infinity, {normal: .52, noSocialSecurity: .52}]
+    ]);
+
+    const defaultSettings = {
+        holidayAllowance: false,
+        ruling30: false,
+        socialSecurity: true
     };
 
-    var calculate = function calculate(inputAmount, settings) {
-        let inputAllowance = settings.holidayAllowance;
-        let inputRuling = settings.ruling30;
-        console.log("NL: calculating from values, amount: " + inputAmount + ", allowance:" + inputAllowance + ", ruling:" + inputRuling);
+    var calculate = function calculate(inputAmount, settings = defaultSettings) {
         let grossYear = inputAmount || 0;
-        if (inputAllowance) {
-            grossYear = +inputAmount / 1.08; //-8%
+        if (settings.holidayAllowance) {
+            grossYear = +inputAmount / 1.08;
         }
-        output.taxableYear = grossYear;
-        if (inputRuling) {
-            output.taxableYear = output.taxableYear * 0.7;
-        }
-        output.generalCredit = getAlgemeneHeffingskorting(output.taxableYear);
-        output.labourCredit = getArbeidskorting(output.taxableYear);
-        output.grossMonth = ~~(grossYear / 12);
-        output.netYear = grossYear - getTaxAmount(output.taxableYear);
-        output.netYear += output.generalCredit + output.labourCredit;
-        output.netMonth = ~~(output.netYear / 12);
-        output.incomeTax = getTaxAmount(output.taxableYear);
-        output.grossYear = inputAmount
-    }
+        let grossMonth = grossYear / 12;
+        let taxableYear = settings.ruling30 ? grossYear * 0.7 : grossYear;
+        let generalCredit = getGeneralDiscount(taxableYear);
+        let labourCredit = getLabourDiscount(taxableYear);
+        let incomeTax = getTaxAmount(taxableYear, settings.socialSecurity);
+        let netYear = grossYear - incomeTax + generalCredit + labourCredit;
+        let netMonth = netYear / 12;
 
+        return {
+            grossYear: round(grossYear, settings),
+            grossMonth: round(grossMonth, settings),
+            taxableYear: round(taxableYear, settings),
+            generalCredit: round(generalCredit, settings),
+            labourCredit: round(labourCredit, settings),
+            incomeTax: round(incomeTax, settings),
+            netYear: round(netYear, settings),
+            netMonth: round(netMonth, settings)
+        };
+    };
 
-    function getTaxAmount(taxableIncome = 0) {
-
-        const taxAmountPeriods = [
-            19922, // 0 - 19,922
-            13793, // 33,715 - 19,922
-            32697, // 66,421 - 33,715
-            Infinity
-        ];
-        let taxRates = [.3655, .404, .404, .52];
+    function getTaxAmount(taxableIncome, socialSecurity) {
         let taxAmount = 0;
-
-        for (let i = 0; i < taxRates.length; i++) {
-
-            if (taxableIncome - taxAmountPeriods[i] < 0) {
-                taxAmount += Math.floor(taxableIncome * taxRates[i]);
+        for (var [key, value] of taxBrackets) {
+            if (taxableIncome - key < 0) {
+                taxAmount += (taxableIncome * (socialSecurity ? value.normal : value.noSocialSecurity));
                 break;
             } else {
-                taxAmount += Math.floor(taxAmountPeriods[i] * taxRates[i]);
-                taxableIncome = taxableIncome - taxAmountPeriods[i];
+                taxAmount += (key * (socialSecurity ? value.normal : value.noSocialSecurity));
+                taxableIncome = taxableIncome - key;
             }
         }
         return taxAmount;
     }
 
-    //labor discount
-    function getArbeidskorting(salary) {
-        if (salary < 9147) {
-            return salary * 1.793 / 100;
+    function getLabourDiscount(taxableYear) {
+        if (taxableYear < 9147) {
+            return taxableYear * 1.793 / 100;
         }
-        if (salary < 19758) {
-            return 164 + (salary - 9147) * 27.698 / 100;
+        if (taxableYear < 19758) {
+            return 164 + (taxableYear - 9147) * 27.698 / 100;
         }
-        if (salary < 34015) {
+        if (taxableYear < 34015) {
             return 3103;
         }
-        if (salary < 111590) {
-            return 3103 - (salary - 39015) * 4 / 100;
+        if (taxableYear < 111590) {
+            return 3103 - (taxableYear - 39015) * 4 / 100;
         }
-
         return 0;
     }
 
-    //general discount
-    function getAlgemeneHeffingskorting(salary) {
-        if (salary < 19922) {
+    function getGeneralDiscount(taxableYear) {
+        if (taxableYear < 19922) {
             return 2242;
         }
-        if (salary < 66417) {
-            return 2242 - (salary - 19922) * 4.822 / 100;
+        if (taxableYear < 66417) {
+            return 2242 - (taxableYear - 19922) * 4.822 / 100;
         }
-
         return 0;
     }
 
+    function round(value, settings) {
+        if (settings.rounding !== undefined && settings.rounding != null) {
+            value = value.toFixed(settings.rounding)
+        }
+        return value;
+    }
+
+
     return {
-        calculate: calculate,
-        breakdown: output,
+        calculate: calculate
     }
 
 })();
+
+exports.NL = NL;

@@ -1,24 +1,12 @@
 let commonInput;
 
-function swapem() {
-
-    if ($('#year').hasClass("fadeInUp")) {
-        $('#year').addClass("animated fadeInDown")
-        $('#month').addClass("animated fadeInUp")
-    } else {
-        $('#year').addClass("animated fadeInUp")
-        $('#month').addClass("animated fadeInDown")
-    }
-};
-
 $(document).ready(function () {
-
 
     commonInput = new Vue({
         el: '#common-input',
         data: {
             year_input: 50000,
-            countries: ['NL', 'UK']
+            countries: ['NL']
         },
         computed: {
             year_input_monthly: function () {
@@ -43,11 +31,6 @@ $(document).ready(function () {
 
     });
 
-    $("#month").click(function () {
-        $('#disabled').removeAttr('disabled');
-        $('#year_amount').prop('disabled', true);
-    });
-
     $('.collapsible').collapsible({
         accordion: false
     });
@@ -59,8 +42,8 @@ Vue.component("result-item", {
     '<div class="collapsible-header row">' +
     '<div class="col s3" v-bind:class="styleClass">{{data.country}}</div>' +
     '<div class="col s3">{{data.yearlyAmount}}</div>' +
-    '<div class="col s3">{{data.summary.net_year}}</div>' +
-    '<div class="col s3">{{data.summary.net_month}}</div>' +
+    '<div class="col s3">{{data.breakdown.netYear}}</div>' +
+    '<div class="col s3">{{data.breakdown.netMonth}}</div>' +
     '</div>' +
     '<div class="collapsible-body row">' +
     '<component v-bind:is="countryComponent"></component>' +
@@ -83,7 +66,7 @@ Vue.component("result-item", {
 Vue.component("breakdown-row", {
     template: '<div class="breakdown-row">' +
     '<div class="col s6" >{{title}}</div>' +
-    '<div class="col s4 offset-s2" >{{value}}</div>' +
+    '<div class="col s4" style="text-align: right" >{{value}}</div>' +
     '</div>',
     props: {
         title: String,
@@ -92,7 +75,6 @@ Vue.component("breakdown-row", {
 });
 
 function Calculator(country, instance, settings) {
-
     return new Vue({
         data: {
             country: country,
@@ -102,30 +84,21 @@ function Calculator(country, instance, settings) {
         },
         computed: {
             breakdown: function () {
-                this.calculate(this.yearlyAmount);
-                return this.instance.breakdown;
-            },
-            summary: function () {
-                return {
-                    country: this.country,
-                    grossYear: this.breakdown.grossYear,
-                    net_year: Math.round(this.breakdown.netYear),
-                    net_month: this.breakdown.netMonth
-                }
-            }
-        },
-        methods: {
-            calculate: function () {
-                this.instance.calculate(this.yearlyAmount, this.settings);
+                return this.instance.calculate(this.yearlyAmount, this.settings);
             }
         }
     })
 }
 
-let UKCalculator = new Calculator('UK', UK);
+let UKCalculator = new Calculator('UK', UK, {
+    nationalInsurance: true,
+    rounding: 0
+});
 let NLCalculator = new Calculator('NL', NL, {
     ruling30: true,
-    holidayAllowance: false
+    holidayAllowance: false,
+    socialSecurity: true,
+    rounding: 0
 });
 
 let NLComponent = Vue.extend({
@@ -143,8 +116,12 @@ let NLComponent = Vue.extend({
     '<label for="test5">30% Ruling</label>' +
     '</div>' +
     '<div class="row">' +
-    '<input type="checkbox" class="filled-in" id="test6" v-model="settings.holidayAllowance"/>' +
-    '<label for="test6">Holiday Allowance</label>' +
+    '<input type="checkbox" class="filled-in" id="nl-allow" v-model="settings.holidayAllowance"/>' +
+    '<label for="nl-allow">Holiday Allowance</label>' +
+    '</div>' +
+    '<div class="row">' +
+    '<input type="checkbox" class="filled-in" id="nl-ni" v-model="settings.socialSecurity"/>' +
+    '<label for="nl-ni">Social Security</label>' +
     '</div>' +
     '</div>' +
     '</div>',
@@ -159,8 +136,15 @@ let UKComponent = Vue.extend({
     '<div class="col s6">' +
     '<breakdown-row title="Taxable Income" :value="breakdown.taxableYear"></breakdown-row>' +
     '<breakdown-row title="Income Tax" :value="breakdown.incomeTax" ></breakdown-row>' +
+    '<breakdown-row title="Personal Allowance" :value="breakdown.personalAllowance" ></breakdown-row>' +
     '<breakdown-row title="National Insurance" :value="breakdown.nationalInsurance" ></breakdown-row>' +
     '<breakdown-row title="Net Income" :value="breakdown.netYear" ></breakdown-row>' +
+    '</div>' +
+    '<div class="input-field col s6">' +
+    '<div class="row">' +
+    '<input type="checkbox" class="filled-in" id="uk-ni" v-model="settings.nationalInsurance"/>' +
+    '<label for="uk-ni">National Insurance</label>' +
+    '</div>' +
     '</div>' +
     '</div>',
     data: function () {
