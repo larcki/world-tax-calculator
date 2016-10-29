@@ -40,7 +40,7 @@ $(document).ready(function () {
 Vue.component("result-item", {
     template: '<li>' +
     '<div class="collapsible-header row">' +
-    '<div class="col s3" v-bind:class="styleClass">{{data.country}}</div>' +
+    '<div class="col s3 m3 l3" v-bind:class="styleClass">{{data.country}}</div>' +
     '<div class="col s3">{{data.yearlyAmount}}</div>' +
     '<div class="col s3">{{data.breakdown.netYear}}</div>' +
     '<div class="col s3">{{data.breakdown.netMonth}}</div>' +
@@ -65,12 +65,12 @@ Vue.component("result-item", {
 
 Vue.component("breakdown-row", {
     template: '<div class="breakdown-row">' +
-    '<div class="col s6" >{{title}}</div>' +
-    '<div class="col s4" style="text-align: right" >{{value}}</div>' +
+    '<div class="col s8 m6 l6" >{{title}}</div>' +
+    '<div class="col s4 m4 l6" style="text-align: right" >{{value}}</div>' +
     '</div>',
     props: {
         title: String,
-        value: Number
+        value: String
     }
 });
 
@@ -103,14 +103,14 @@ let NLCalculator = new Calculator('NL', NL, {
 
 let NLComponent = Vue.extend({
     template: '<div class="row" style="padding:20px">' +
-    '<div class="col s6">' +
+    '<div class="col s12 m8 l5">' +
     '<breakdown-row title="Taxable Income" :value="breakdown.taxableYear" ></breakdown-row>' +
     '<breakdown-row title="Income Tax" :value="breakdown.incomeTax" ></breakdown-row>' +
     '<breakdown-row title="General Tax Credit" :value="breakdown.generalCredit" ></breakdown-row>' +
     '<breakdown-row title="Labour Tax Credit" :value="breakdown.labourCredit" ></breakdown-row>' +
     '<breakdown-row title="Net Income" :value="breakdown.netYear" ></breakdown-row>' +
     '</div>' +
-    '<div class="input-field col s6">' +
+    '<div class="input-field col s12 m4 l6 offset-l1">' +
     '<div class="row">' +
     '<input type="checkbox" class="filled-in" id="test5" v-model="settings.ruling30"/>' +
     '<label for="test5">30% Ruling</label>' +
@@ -133,14 +133,14 @@ let NLComponent = Vue.extend({
 
 let UKComponent = Vue.extend({
     template: '<div class="row" style="padding:20px">' +
-    '<div class="col s6">' +
+    '<div class="col s12 m8 l5">' +
     '<breakdown-row title="Taxable Income" :value="breakdown.taxableYear"></breakdown-row>' +
     '<breakdown-row title="Income Tax" :value="breakdown.incomeTax" ></breakdown-row>' +
     '<breakdown-row title="Personal Allowance" :value="breakdown.personalAllowance" ></breakdown-row>' +
     '<breakdown-row title="National Insurance" :value="breakdown.nationalInsurance" ></breakdown-row>' +
     '<breakdown-row title="Net Income" :value="breakdown.netYear" ></breakdown-row>' +
     '</div>' +
-    '<div class="input-field col s6">' +
+    '<div class="input-field col s12 m4 l6 offset-l1">' +
     '<div class="row">' +
     '<input type="checkbox" class="filled-in" id="uk-ni" v-model="settings.nationalInsurance"/>' +
     '<label for="uk-ni">National Insurance</label>' +
