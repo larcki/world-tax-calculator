@@ -46,6 +46,14 @@
     margin-left: 1% !important;
 }
 
+@media only screen and (max-width: 600px) {
+    .icon {
+        -webkit-background-size: 60px !important;
+        background-size: 60px !important;
+        font-size: 0 !important;
+    }
+}
+
 .UK {
     background: url(../icons/United-Kingdom.png) no-repeat;
 }

@@ -47,7 +47,7 @@ $(document).ready(function () {
 Vue.component("result-item", {
     template: '<li>' +
     '<div class="collapsible-header row no-margin animated fadeIn">' +
-    '<div class="col s3 m3 l3 icon" v-bind:class="styleClass">{{data.country}}</div>' +
+    '<div class="col s3 icon" v-bind:class="styleClass">{{data.country}}</div>' +
     '<div class="col s3">{{data.yearlyAmount}}</div>' +
     '<div class="col s3">{{data.breakdown.netYear}}</div>' +
     '<div class="col s3">{{data.breakdown.netMonth}}</div>' +
