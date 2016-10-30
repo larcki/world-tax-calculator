@@ -6,7 +6,7 @@ $(document).ready(function () {
         el: '#common-input',
         data: {
             year_input: 50000,
-            countries: ['NL']
+            countries: ['UK', 'NL']
         },
         computed: {
             year_input_monthly: function () {
@@ -39,13 +39,13 @@ $(document).ready(function () {
 
 Vue.component("result-item", {
     template: '<li>' +
-    '<div class="collapsible-header row">' +
-    '<div class="col s3 m3 l3" v-bind:class="styleClass">{{data.country}}</div>' +
+    '<div class="collapsible-header row no-margin animated fadeIn">' +
+    '<div class="col s3 m3 l3 icon" v-bind:class="styleClass">{{data.country}}</div>' +
     '<div class="col s3">{{data.yearlyAmount}}</div>' +
     '<div class="col s3">{{data.breakdown.netYear}}</div>' +
     '<div class="col s3">{{data.breakdown.netMonth}}</div>' +
     '</div>' +
-    '<div class="collapsible-body row">' +
+    '<div class="collapsible-body row no-margin">' +
     '<component v-bind:is="countryComponent"></component>' +
     '</div>' +
     '</li>',
@@ -57,8 +57,11 @@ Vue.component("result-item", {
             return CountryComponents.get(this.data.country)
         },
         styleClass: function () {
-            return "icon-" + this.data.country;
+            return this.data.country;
         }
+    },
+    ready: function() {
+        console.log("dsasd")
     }
 });
 

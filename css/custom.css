@@ -43,18 +43,30 @@
 
 }
 
-.icon-UK {
-    background: url(../icons/United-Kingdom.png) no-repeat;
+.icon {
     text-indent: 75px;
     height: 47px;
     width: 24% !important;
     margin-left: 1% !important;
 }
 
-.icon-NL {
+.UK {
+    background: url(../icons/United-Kingdom.png) no-repeat;
+}
+
+.NL {
     background: url(../icons/Netherlands.png) no-repeat;
-    text-indent: 75px;
-    height: 47px;
-    width: 24% !important;
-    margin-left: 1% !important;
+}
+
+.no-margin {
+    margin-bottom: 0
+}
+
+.collapsible-header.row {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.collapsible-header.row:hover {
+    background-color: #fcfcfc;
 }
