@@ -26,10 +26,6 @@
     color: #C2D69B;
 }
 
-.ani {
-    animation-duration: 400ms !important;
-}
-
 .breakdown-row {
     display: inline-block;
     width: 100%;
@@ -69,4 +65,12 @@
 
 .collapsible-header.row:hover {
     background-color: #fcfcfc;
+}
+
+.larger label, input {
+    font-size: 1.4em !important;
+}
+
+.larger label.active {
+    font-size: 1.1em !important;
 }

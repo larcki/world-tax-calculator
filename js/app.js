@@ -5,13 +5,20 @@ $(document).ready(function () {
     commonInput = new Vue({
         el: '#common-input',
         data: {
-            year_input: 50000,
-            countries: ['UK', 'NL']
+            year_input: 36000,
+            countries: []
         },
         computed: {
-            year_input_monthly: function () {
-                if (this.year_input.length !== 0) {
-                    return Math.round(this.year_input / 12);
+            year_input_monthly: {
+                get: function () {
+                    $("#month_amount_label").addClass('active');
+                    if (this.year_input.length !== 0) {
+                        return Math.round(this.year_input / 12);
+                    }
+                },
+                set: function(newValue) {
+                    $("#year_amount_label").addClass('active');
+                    this.year_input = Math.round(newValue * 12);
                 }
             },
             results: function () {
