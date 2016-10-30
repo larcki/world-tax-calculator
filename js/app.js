@@ -6,7 +6,7 @@ $(document).ready(function () {
         el: '#common-input',
         data: {
             year_input: 50000,
-            countries: ['UK', 'NL']
+            countries: []
         },
         computed: {
             year_input_monthly: function () {
@@ -23,6 +23,7 @@ $(document).ready(function () {
                     let country = this.countries[i];
                     var calcInUse = Calculators.get(country);
                     calcInUse.yearlyAmount = this.year_input;
+                    calcInUse.isExpanded = (this.countries.length <= 1);
                     tempArray.push(calcInUse);
                 }
                 return tempArray;
@@ -39,7 +40,7 @@ $(document).ready(function () {
 
 Vue.component("result-item", {
     template: '<li>' +
-    '<div class="collapsible-header row no-margin animated fadeIn">' +
+    '<div class="collapsible-header row no-margin animated fadeIn"  v-bind:class="{ active: data.isExpanded }">' +
     '<div class="col s3 m3 l3 icon" v-bind:class="styleClass">{{data.country}}</div>' +
     '<div class="col s3">{{data.yearlyAmount}}</div>' +
     '<div class="col s3">{{data.breakdown.netYear}}</div>' +
@@ -54,14 +55,22 @@ Vue.component("result-item", {
     },
     computed: {
         countryComponent: function () {
+            setTimeout(this.test, 250)
             return CountryComponents.get(this.data.country)
         },
         styleClass: function () {
+            $('.collapsible').collapsible({
+                accordion: false
+            });
             return this.data.country;
         }
     },
-    ready: function() {
-        console.log("dsasd")
+    methods: {
+        test: function() {
+            $('.collapsible').collapsible({
+                accordion: false
+            });
+        }
     }
 });
 
@@ -83,7 +92,8 @@ function Calculator(country, instance, settings) {
             country: country,
             instance: instance,
             settings: settings,
-            yearlyAmount: 0
+            yearlyAmount: 0,
+            isExpanded: false
         },
         computed: {
             breakdown: function () {
