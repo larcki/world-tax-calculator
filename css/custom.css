@@ -1,3 +1,84 @@
 .padding-right-70 {
-  padding-right: 70px;
+    padding-right: 70px;
+}
+
+.collapsible {
+    box-shadow: none;
+    border-left: none;
+    border-right: none;
+}
+
+.collapsible-header {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.logo-first {
+    color: #D99594;
+
+}
+
+.logo-sec {
+    color: #365F91;
+}
+
+.logo-last {
+    color: #C2D69B;
+}
+
+.breakdown-row {
+    display: inline-block;
+    width: 100%;
+    padding: 10px 0 10px 0;
+    /*border-bottom: 1px solid #ddd;*/
+}
+
+.result-title {
+    /*border-top: 1px solid #ddd;*/
+    /*padding-top: 20px*/
+
+}
+
+.icon {
+    text-indent: 75px;
+    height: 47px;
+    width: 24% !important;
+    margin-left: 1% !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .icon {
+        -webkit-background-size: 60px !important;
+        background-size: 60px !important;
+        font-size: 0 !important;
+    }
+}
+
+.UK {
+    background: url(../icons/United-Kingdom.png) no-repeat;
+}
+
+.NL {
+    background: url(../icons/Netherlands.png) no-repeat;
+}
+
+.no-margin {
+    margin-bottom: 0
+}
+
+.collapsible-header.row {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.collapsible-header.row:hover {
+    background-color: #fcfcfc;
+}
+
+.larger label, input {
+    font-size: 1.4em !important;
+}
+
+.larger label.active {
+    font-size: 1.1em !important;
 }

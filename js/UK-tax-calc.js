@@ -1,71 +1,94 @@
-var UK = (function() {
+var UK = (function () {
 
-    let output = {
-        grossMonth: 0,
-        netYear: 0,
-        netMonth: 0,
-        incomeTax: 0,
-        taxableYear: 0,
-        nationalInsurance: 0
+    const taxBrackets = new Map([
+        [32000, .20],
+        [107000, .40],
+        [Infinity, .45]
+    ]);
+
+    const niBrackets = new Map([
+        [672.01, 0],
+        [2910.99, .12],
+        [Infinity, .02]
+    ]);
+
+    const defaultPersonalAllowance = 11000;
+
+    let defaultSettings = {
+        nationalInsurance: true,
     };
 
-    var calculate = function calculate(inputAmount) {
-        console.log("UK: calculating from values, amount: " + inputAmount);
+    var calculate = function calculate(inputAmount, settings = defaultSettings) {
         let grossYear = inputAmount || 0;
-        output.taxableYear = grossYear;
-        output.grossMonth = ~~(grossYear / 12);
-        output.netYear = grossYear - getTaxAmount(output.taxableYear) - getNationalInsurance(output.taxableYear);
-        output.nationalInsurance = getNationalInsurance(output.taxableYear);
-        output.netMonth = ~~(output.netYear / 12);
-        output.incomeTax = getTaxAmount(output.taxableYear);
+        let grossMonth = grossYear / 12;
+        let personalAllowance = getPersonalAllowance(grossYear);
+        let taxableYear = grossYear - personalAllowance;
+        let incomeTax = getTax(taxableYear);
+        let nationalInsurance = settings.nationalInsurance ? getNationalInsurance(grossYear) : 0;
+        let netYear = grossYear - incomeTax - nationalInsurance;
+        let netMonth = netYear / 12;
+
+        return {
+            grossYear: round(grossYear, settings, settings),
+            grossMonth: round(grossMonth, settings),
+            taxableYear: round(taxableYear, settings),
+            personalAllowance: round(personalAllowance, settings),
+            incomeTax: round(incomeTax, settings),
+            nationalInsurance: round(nationalInsurance, settings),
+            netYear: round(netYear, settings),
+            netMonth: round(netMonth, settings)
+        };
+    };
+
+    function getPersonalAllowance(grossYear) {
+        var surplus = grossYear - 100000;
+        if (surplus <= 0) {
+            return defaultPersonalAllowance;
+        }
+        var personalAllowance = defaultPersonalAllowance - surplus / 2;
+        return (personalAllowance < 0) ? 0 : personalAllowance;
     }
 
     function getNationalInsurance(taxableIncome = 0) {
         taxableIncome = taxableIncome / 12;
-        const NIAmountPeriods = [
-            672.01,
-            2910.99,
-            Infinity
-        ];
-        let taxRates = [0, .12, .02];
         let taxAmount = 0;
-        for (let i = 0; i < taxRates.length; i++) {
-            if (taxableIncome - NIAmountPeriods[i] < 0) {
-                taxAmount += taxableIncome * taxRates[i];
+        for (var [amount, taxRate] of niBrackets) {
+            if (taxableIncome - amount < 0) {
+                taxAmount += taxableIncome * taxRate;
                 break;
             } else {
-                taxAmount += NIAmountPeriods[i] * taxRates[i];
-                taxableIncome = taxableIncome - NIAmountPeriods[i];
+                taxAmount += amount * taxRate;
+                taxableIncome = taxableIncome - amount;
             }
         }
-        return Math.floor(taxAmount * 12);
+        return taxAmount * 12;
     }
 
-    function getTaxAmount(taxableIncome = 0) {
-        //TODO:  no personal allowance for over 120.000!
-        const taxAmountPeriods = [
-            11000, // 0 - 19,922
-            32000, // 33,715 - 19,922
-            107000, // 66,421 - 33,715
-            Infinity
-        ];
-        let taxRates = [0, .20, .40, .45];
+    function getTax(taxableIncome = 0) {
         let taxAmount = 0;
-        for (let i = 0; i < taxRates.length; i++) {
-            if (taxableIncome - taxAmountPeriods[i] < 0) {
-                taxAmount += Math.floor(taxableIncome * taxRates[i]);
+        for (var [amount, taxRate] of taxBrackets) {
+            if (taxableIncome - amount < 0) {
+                taxAmount += taxableIncome * taxRate;
                 break;
             } else {
-                taxAmount += Math.floor(taxAmountPeriods[i] * taxRates[i]);
-                taxableIncome = taxableIncome - taxAmountPeriods[i];
+                taxAmount += amount * taxRate;
+                taxableIncome = taxableIncome - amount;
             }
         }
         return taxAmount;
     }
 
+    function round(value, settings) {
+        if (settings.rounding !== undefined && settings.rounding != null) {
+            value = value.toFixed(settings.rounding)
+        }
+        return value;
+    }
+
     return {
-        calculate: calculate,
-        result: output
+        calculate: calculate
     }
 
 })();
+
+exports.UK = UK;
