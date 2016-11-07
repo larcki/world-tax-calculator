@@ -1,7 +1,6 @@
 var assert = require('assert');
-var rewire = require('rewire');
 
-var calculator = rewire('../js/UK-tax-calc.js').UK;
+var calculator = require('../js/UK-tax-calc.js');
 
 describe('UK Tax Calculator', function () {
 

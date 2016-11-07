@@ -1,4 +1,4 @@
-var NL = (function () {
+module.exports = (function () {
 
     const taxBrackets = new Map([
         [19922, {normal: .3655, noSocialSecurity: .0835}],
@@ -91,5 +91,3 @@ var NL = (function () {
     }
 
 })();
-
-exports.NL = NL;

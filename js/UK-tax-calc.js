@@ -1,4 +1,4 @@
-var UK = (function () {
+module.exports = (function () {
 
     const taxBrackets = new Map([
         [32000, .20],
@@ -90,5 +90,3 @@ var UK = (function () {
     }
 
 })();
-
-exports.UK = UK;
