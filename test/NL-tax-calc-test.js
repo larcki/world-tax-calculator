@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var calculator = require('../js/NL-tax-calc.js');
+var calculator = require('../js/nl-calculator.js');
 
 describe('NL Tax Calculator', function () {
 
