@@ -4,7 +4,7 @@ var register = require('./register.js');
 
 $(document).ready(function () {
 
-    new Vue({
+    var vue = new Vue({
         el: '#common-input',
         data: {
             year_input: '',
@@ -41,6 +41,35 @@ $(document).ready(function () {
 
     });
 
+
+    $('select').change(function() {
+        var newCountries = $("select option:selected");
+
+        newCountries.each(function() {
+            if (!vue.countries.includes(this.value)) {
+                vue.countries.push(this.value)
+            }
+        });
+
+        for (var i in vue.countries) {
+            var country = vue.countries[i];
+            if (!includes(country, newCountries)) {
+                vue.countries.splice(i, 1)
+            }
+        }
+
+        function includes(country, list) {
+            for (var i = 0; i < list.length; i++) {
+                if (list.get(i).value === country) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+    });
+
+    $('select').material_select();
     $('.collapsible').collapsible({
         accordion: false
     });
