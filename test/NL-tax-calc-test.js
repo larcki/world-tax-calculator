@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var calculator = require('../js/nl-calculator.js');
+var calculator = require('../js/calculator/nl-calculator.js');
 
 describe('NL Tax Calculator', function () {
 
@@ -33,6 +33,22 @@ describe('NL Tax Calculator', function () {
         let result = calculator.calculate(50000, {});
         assert.equal(result.grossYear, 50000);
         assert.equal(result.grossMonth, 4166.666666666667);
+    });
+
+    it('should convert values when currency GBP', function () {
+        let result = calculator.calculate(50000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'GBP'});
+        assert.equal(result.netYear, 32705);
+
+        result = calculator.calculate(100000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'GBP'});
+        assert.equal(result.netYear, 55179);
+    });
+
+    it('should convert values when currency EUR', function () {
+        let result = calculator.calculate(50000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'EUR'});
+        assert.equal(result.netYear, 34022);
+
+        result = calculator.calculate(100000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'EUR'});
+        assert.equal(result.netYear, 57134);
     });
 
 });

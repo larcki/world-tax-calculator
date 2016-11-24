@@ -1,4 +1,8 @@
+var currencyConverter = require("./currency-converter");
+
 module.exports = (function () {
+
+    const currency = 'GBP';
 
     const taxBrackets = new Map([
         [32000, .20],
@@ -15,10 +19,11 @@ module.exports = (function () {
     const defaultPersonalAllowance = 11000;
 
     let defaultSettings = {
-        nationalInsurance: true,
+        nationalInsurance: true
     };
 
     var calculate = function calculate(inputAmount, settings = defaultSettings) {
+        inputAmount = currencyConverter(inputAmount, settings.currency, currency);
         let grossYear = inputAmount || 0;
         let grossMonth = grossYear / 12;
         let personalAllowance = getPersonalAllowance(grossYear);
@@ -79,6 +84,7 @@ module.exports = (function () {
     }
 
     function round(value, settings) {
+        value = currencyConverter(value, currency, settings.currency);
         if (settings.rounding !== undefined && settings.rounding != null) {
             value = value.toFixed(settings.rounding)
         }

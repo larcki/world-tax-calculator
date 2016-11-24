@@ -8,7 +8,8 @@ $(document).ready(function () {
         el: '#common-input',
         data: {
             year_input: '',
-            countries: []
+            countries: [],
+            currency: 'EUR'
         },
         computed: {
             year_input_monthly: {
@@ -33,6 +34,7 @@ $(document).ready(function () {
                     var calcInUse = register.get(country).model;
                     calcInUse.yearlyAmount = this.year_input;
                     calcInUse.isExpanded = (this.countries.length <= 1);
+                    calcInUse.settings.currency = this.currency;
                     tempArray.push(calcInUse);
                 }
                 return tempArray;
@@ -42,8 +44,8 @@ $(document).ready(function () {
     });
 
 
-    $('select').change(function() {
-        var newCountries = $("select option:selected");
+    $('#country-select').change(function() {
+        var newCountries = $("#country-select option:selected");
 
         newCountries.each(function() {
             if (!vue.countries.includes(this.value)) {
@@ -67,6 +69,10 @@ $(document).ready(function () {
             return false;
         }
 
+    });
+
+    $('#currency-select').change(function() {
+        vue.currency = this.value;
     });
 
     $('select').material_select();

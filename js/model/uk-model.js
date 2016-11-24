@@ -3,5 +3,6 @@ var calculator = require('../calculator/uk-calculator.js');
 
 module.exports = new CalculatorModel('UK', calculator, {
     nationalInsurance: true,
-    rounding: 0
+    rounding: 0,
+    currency: null
 });

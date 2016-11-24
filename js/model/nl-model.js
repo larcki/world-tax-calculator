@@ -5,5 +5,6 @@ module.exports = new CalculatorModel('NL', calculator, {
     ruling30: true,
     holidayAllowance: false,
     socialSecurity: true,
-    rounding: 0
+    rounding: 0,
+    currency: null
 });

@@ -1,6 +1,6 @@
 var assert = require('assert');
 
-var calculator = require('../js/uk-calculator.js');
+var calculator = require('../js/calculator/uk-calculator.js');
 
 describe('UK Tax Calculator', function () {
 
@@ -60,6 +60,22 @@ describe('UK Tax Calculator', function () {
     it('should use rounding when specified', function () {
         let result = calculator.calculate(50000, {nationalInsurance: true, rounding: 2});
         assert.equal(result.netYear, 36468.09);
+    });
+
+    it('should convert values when currency EUR', function () {
+        let result = calculator.calculate(50000, {nationalInsurance: true, rounding: 0, currency: 'EUR'});
+        assert.equal(result.netYear, 37738);
+
+        result = calculator.calculate(100000, {nationalInsurance: true, rounding: 0, currency: 'EUR'});
+        assert.equal(result.netYear, 66812);
+    });
+
+    it('should convert values when currency GBP', function () {
+        let result = calculator.calculate(50000, {nationalInsurance: true, rounding: 0, currency: 'GBP'});
+        assert.equal(result.netYear, 36468);
+
+        result = calculator.calculate(100000, {nationalInsurance: true, rounding: 0, currency: 'GBP'});
+        assert.equal(result.netYear, 65468);
     });
 
 });

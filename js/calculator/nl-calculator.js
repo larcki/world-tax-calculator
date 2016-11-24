@@ -1,4 +1,8 @@
+var currencyConverter = require("./currency-converter");
+
 module.exports = (function () {
+
+    const currency = 'EUR';
 
     const taxBrackets = new Map([
         [19922, {normal: .3655, noSocialSecurity: .0835}],
@@ -10,10 +14,12 @@ module.exports = (function () {
     const defaultSettings = {
         holidayAllowance: false,
         ruling30: false,
-        socialSecurity: true
+        socialSecurity: true,
+        currency: null
     };
 
     var calculate = function calculate(inputAmount, settings = defaultSettings) {
+        inputAmount = currencyConverter(inputAmount, settings.currency, currency);
         let grossYear = inputAmount || 0;
         if (settings.holidayAllowance) {
             grossYear = +inputAmount / 1.08;
@@ -79,6 +85,7 @@ module.exports = (function () {
     }
 
     function round(value, settings) {
+        value = currencyConverter(value, currency, settings.currency)
         if (settings.rounding !== undefined && settings.rounding != null) {
             value = value.toFixed(settings.rounding)
         }
