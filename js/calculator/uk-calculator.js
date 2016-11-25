@@ -32,16 +32,19 @@ module.exports = (function () {
         let nationalInsurance = settings.nationalInsurance ? getNationalInsurance(grossYear) : 0;
         let netYear = grossYear - incomeTax - nationalInsurance;
         let netMonth = netYear / 12;
+        let totalDeductionRate = netYear / inputAmount;
 
         return {
-            grossYear: round(grossYear, settings, settings),
-            grossMonth: round(grossMonth, settings),
-            taxableYear: round(taxableYear, settings),
-            personalAllowance: round(personalAllowance, settings),
-            incomeTax: round(incomeTax, settings),
-            nationalInsurance: round(nationalInsurance, settings),
-            netYear: round(netYear, settings),
-            netMonth: round(netMonth, settings)
+            grossYear: convertAndRound(grossYear, settings, settings),
+            grossMonth: convertAndRound(grossMonth, settings),
+            taxableYear: convertAndRound(taxableYear, settings),
+            personalAllowance: convertAndRound(personalAllowance, settings),
+            incomeTax: convertAndRound(incomeTax, settings),
+            nationalInsurance: convertAndRound(nationalInsurance, settings),
+            netYear: convertAndRound(netYear, settings),
+            netYearHomeCurrency: round(netYear, settings),
+            totalDeductionRate: totalDeductionRate,
+            netMonth: convertAndRound(netMonth, settings)
         };
     };
 
@@ -86,8 +89,12 @@ module.exports = (function () {
         return taxAmount;
     }
 
-    function round(value, settings) {
+    function convertAndRound(value, settings) {
         value = currencyConverter(value, currency, settings.currency);
+        return round(value, settings);
+    }
+
+    function round(value, settings) {
         if (settings.rounding !== undefined && settings.rounding != null) {
             value = value.toFixed(settings.rounding)
         }
