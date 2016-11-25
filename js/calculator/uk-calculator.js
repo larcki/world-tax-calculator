@@ -46,6 +46,9 @@ module.exports = (function () {
     };
 
     function getPersonalAllowance(grossYear) {
+        if (grossYear <= defaultPersonalAllowance) {
+            return grossYear;
+        }
         var surplus = grossYear - 100000;
         if (surplus <= 0) {
             return defaultPersonalAllowance;

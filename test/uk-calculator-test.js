@@ -78,6 +78,17 @@ describe('UK Tax Calculator', function () {
         assert.equal(result.netYear, 65468);
     });
 
+    it('should convert low values correctly', function () {
+        let result = calculator.calculate(2000);
+        assert.equal(result.netYear, 2000);
+
+        result = calculator.calculate(10000);
+        assert.equal(result.netYear, 9767.6944);
+
+        result = calculator.calculate(15000);
+        assert.equal(result.netYear, 13367.6944);
+    });
+
 });
 
 
