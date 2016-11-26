@@ -2,8 +2,6 @@ var currencyConverter = require("./currency-converter");
 
 module.exports = (function () {
 
-    const currency = 'EUR';
-
     const taxBrackets = new Map([
         [19922, {normal: .3655, noSocialSecurity: .0835}],
         [13793, {normal: .404, noSocialSecurity: .1385}],
@@ -19,7 +17,7 @@ module.exports = (function () {
     };
 
     var calculate = function calculate(inputAmount, settings = defaultSettings) {
-        inputAmount = currencyConverter(inputAmount, settings.currency, currency);
+        inputAmount = currencyConverter(inputAmount, settings.currency, settings.calculatorCurrency);
         let grossYear = inputAmount || 0;
         if (settings.holidayAllowance) {
             grossYear = +inputAmount / 1.08;
@@ -31,16 +29,19 @@ module.exports = (function () {
         let incomeTax = getTaxAmount(taxableYear, settings.socialSecurity);
         let netYear = grossYear - incomeTax + generalCredit + labourCredit;
         let netMonth = netYear / 12;
+        let totalDeductionRate = (netYear / inputAmount - 1) * -1;
 
         return {
-            grossYear: round(grossYear, settings),
-            grossMonth: round(grossMonth, settings),
-            taxableYear: round(taxableYear, settings),
-            generalCredit: round(generalCredit, settings),
-            labourCredit: round(labourCredit, settings),
-            incomeTax: round(incomeTax, settings),
-            netYear: round(netYear, settings),
-            netMonth: round(netMonth, settings)
+            grossYear: convertAndRound(grossYear, settings),
+            grossMonth: convertAndRound(grossMonth, settings),
+            taxableYear: convertAndRound(taxableYear, settings),
+            generalCredit: convertAndRound(generalCredit, settings),
+            labourCredit: convertAndRound(labourCredit, settings),
+            incomeTax: convertAndRound(incomeTax, settings),
+            netYear: convertAndRound(netYear, settings),
+            netYearHomeCurrency: round(netYear, settings),
+            totalDeductionRate: round(totalDeductionRate * 100, 1),
+            netMonth: convertAndRound(netMonth, settings)
         };
     };
 
@@ -84,14 +85,17 @@ module.exports = (function () {
         return 0;
     }
 
-    function round(value, settings) {
-        value = currencyConverter(value, currency, settings.currency)
-        if (settings.rounding !== undefined && settings.rounding != null) {
-            value = value.toFixed(settings.rounding)
+    function convertAndRound(value, settings) {
+        value = currencyConverter(value, settings.calculatorCurrency, settings.currency);
+        return round(value, settings.rounding);
+    }
+
+    function round(value, rounding) {
+        if (rounding !== undefined && rounding != null) {
+            value = value.toFixed(rounding)
         }
         return value;
     }
-
 
     return {
         calculate: calculate

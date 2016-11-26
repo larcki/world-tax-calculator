@@ -36,18 +36,18 @@ describe('NL Tax Calculator', function () {
     });
 
     it('should convert values when currency GBP', function () {
-        let result = calculator.calculate(50000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'GBP'});
+        let result = calculator.calculate(50000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'GBP', calculatorCurrency: 'EUR'});
         assert.equal(result.netYear, 32705);
 
-        result = calculator.calculate(100000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'GBP'});
+        result = calculator.calculate(100000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'GBP', calculatorCurrency: 'EUR'});
         assert.equal(result.netYear, 55179);
     });
 
     it('should convert values when currency EUR', function () {
-        let result = calculator.calculate(50000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'EUR'});
+        let result = calculator.calculate(50000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'EUR', calculatorCurrency: 'EUR'});
         assert.equal(result.netYear, 34022);
 
-        result = calculator.calculate(100000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'EUR'});
+        result = calculator.calculate(100000, {ruling30: false, holidayAllowance: false, rounding: 0, socialSecurity: true, currency: 'EUR', calculatorCurrency: 'EUR'});
         assert.equal(result.netYear, 57134);
     });
 
