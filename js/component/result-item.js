@@ -18,7 +18,7 @@ module.exports = Vue.component("result-item", {
     },
     computed: {
         countryComponent: function () {
-            setTimeout(this.expand, 500);
+            //setTimeout(this.expand, 500);
             return register.get(this.data.country).component;
         },
         styleClass: function () {

@@ -9,7 +9,7 @@ $(document).ready(function () {
         data: {
             year_input: '',
             countries: [],
-            currency: 'EUR'
+            currency: ''
         },
         computed: {
             year_input_monthly: {
@@ -33,7 +33,7 @@ $(document).ready(function () {
                     let country = this.countries[i];
                     var calcInUse = register.get(country).model;
                     calcInUse.yearlyAmount = this.year_input;
-                    calcInUse.isExpanded = (this.countries.length <= 1);
+                    //calcInUse.isExpanded = (this.countries.length <= 1);
                     calcInUse.settings.currency = this.currency;
                     tempArray.push(calcInUse);
                 }
@@ -43,6 +43,7 @@ $(document).ready(function () {
 
     });
 
+    setCurrency('GBP')
 
     $('#country-select').change(function() {
         var newCountries = $("#country-select option:selected");
@@ -71,14 +72,19 @@ $(document).ready(function () {
 
     });
 
-    $('#currency-select').change(function() {
-        vue.currency = this.value;
-    });
-
+    $(".dropdown-button").dropdown();
     $('select').material_select();
     $('.collapsible').collapsible({
         accordion: false
     });
+    $('.currency-value').click(function() {
+        setCurrency(this.text);
+    });
+
+    function setCurrency(currency) {
+        vue.currency = currency;
+        $('#currency-button').contents().first()[0].textContent = currency;
+    }
 
 });
 

@@ -18,64 +18,76 @@
 
 <body style="background-color: #f5f7f9">
 
+<div id="common-input">
 
-<nav style="background-color: white; font-weight: bold;" role="navigation">
-    <div class="nav-wrapper container">
-        <a id="logo-container" href="#" class="brand-logo animated fadeIn"><span
-                class="logo-first">The</span><span
-                class="logo-sec">Expat</span><span
-                class="logo-last">Tax</span></a>
+    <ul id="currency-select" class="dropdown-content">
+        <li><a href="#" class="currency-value">EUR</a></li>
+        <li><a href="#" class="currency-value">GBP</a></li>
+    </ul>
+
+    <nav style="background-color: white; font-weight: bold;" role="navigation">
+        <div class="nav-wrapper container">
+            <a id="logo-container" href="#" class="brand-logo animated fadeIn"><span
+                    class="logo-first">The</span><span
+                    class="logo-sec">Expat</span><span
+                    class="logo-last">Tax</span></a>
+            <ul class="right">
+                <!-- Dropdown Trigger -->
+                <li><a class="dropdown-button" href="#!" id="currency-button"
+                       data-activates="currency-select">Dropdown<i class="material-icons right">arrow_drop_down</i></a>
+                </li>
+            </ul>
+        </div>
+
+    </nav>
+
+    <br>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col s12 z-depth-1 white" style="padding: 30px;">
+
+                <form>
+
+                    <div id="year" class="row larger">
+                        <div class="input-field col s12 m6 l6">
+                            <input v-model="year_input" onclick="select()" id="year_amount" type="number" step=1000>
+                            <label id=year_amount_label for="year_amount">Per year</label>
+                        </div>
+                        <div class="input-field col s12 m6 l6">
+                            <input v-model="year_input_monthly" onclick="select()" id="month_amount" type="number"
+                                   step=50>
+                            <label id="month_amount_label" for="month_amount">Per Month</label>
+                        </div>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="input-field col s12 m6 l6">
+                            <select id="country-select" class="icons" v-model="countries" multiple>
+                                <option value="" disabled>Country</option>
+                                <option value="UK" class="circle" data-icon="icons/United-Kingdom.png">United Kingdom</option>
+                                <option value="NL" class="circle" data-icon="icons/Netherlands.png">Netherlands</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
-</nav>
 
+    <div class="container">
 
-<br>
+    </div>
 
-<div class="container" id="common-input">
-    <div class="row">
-        <div class="col s12 z-depth-1 white" style="padding: 30px;">
-            <form>
+    <br>
 
-                <div id="year" class="row larger">
-                    <div class="input-field col s12 m6 l6">
-                        <input v-model="year_input" onclick="select()" id="year_amount" type="number" step=1000>
-                        <label id=year_amount_label for="year_amount">Per year</label>
-                    </div>
-
-                </div>
-
-                <div id="month" class="row larger">
-                    <div class="input-field col s12 m6 l6">
-                        <input v-model="year_input_monthly" onclick="select()" id="month_amount" type="number" step=50>
-                        <label id="month_amount_label" for="month_amount">Per Month</label>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s12 m6 l6">
-                        <select id="currency-select" v-model="currency">
-                            <option value="EUR" >EUR</option>
-                            <option value="GBP" >GBP</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="input-field col s12 m6 l6">
-                        <select id="country-select" class="icons" v-model="countries" multiple>
-                            <option value="" disabled>Country</option>
-                            <option value="UK" class="circle" data-icon="icons/United-Kingdom.png">United Kingdom</option>
-                            <option value="NL" class="circle" data-icon="icons/Netherlands.png">Netherlands</option>
-                        </select>
-                    </div>
-                </div>
-
-            </form>
-            <br>
-
+    <div class="row result-titles">
+        <div class="col offset-l1 s12 m12 l10">
             <div v-show="results.length" class="row animated fadeIn" style="font-weight: bold;">
                 <div class="col s3">
-                    Country
                 </div>
                 <div class="col s3">
                     Net per year
@@ -87,16 +99,22 @@
                     Total Tax Rate (%)
                 </div>
             </div>
-            <!--<div class="row">-->
-                <ul class="collapsible popout" data-collapsible="expandable">
-                    <result-item v-for="result in results" :data="result"></result-item>
-                </ul>
-            <!--</div>-->
+        </div>
+    </div>
 
+    <div class="row">
+        <div class="col offset-l1 s12 m12 l10">
+            <ul class="collapsible popout" data-collapsible="expandable">
+                <result-item v-for="result in results" :data="result"></result-item>
+            </ul>
         </div>
     </div>
 
 </div>
+</div>
+
+</div>
+
 <br><br>
 
 <footer class="page-footer grey darken-3">
@@ -105,8 +123,10 @@
             <div class="col l6 s12">
                 <h5 class="white-text">Company Bio</h5>
 
-                <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's
-                    our full time job. Any amount would help support and continue development on this project and is
+                <p class="grey-text text-lighten-4">We are a team of college students working on this project
+                    like it's
+                    our full time job. Any amount would help support and continue development on this project
+                    and is
                     greatly appreciated.</p>
 
 
@@ -137,7 +157,6 @@
         </div>
     </div>
 </footer>
-
 </body>
 
 </html>

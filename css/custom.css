@@ -90,3 +90,46 @@
 .larger label.active {
     font-size: 1.1em !important;
 }
+
+#currency-button {
+    color: gray;
+}
+
+@media only screen and (max-width: 600px) {
+    #currency-button {
+        padding: 0;
+    }
+
+    #currency-button i {
+        margin: 0;
+    }
+
+}
+
+.result-titles {
+    margin: 0 30px 0 30px;
+}
+
+.result-titles div {
+    margin: 0;
+}
+
+@media only screen and (max-width: 600px) {
+    .popout li {
+        margin: 0 !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .result-titles {
+        margin: 0 !important;
+    }
+
+    .result-titles .col .s3 {
+        padding: 0 2px 0 2px;;
+    }
+}
+
+.collapsible-body {
+    background-color: white;
+}
