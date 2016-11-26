@@ -10,6 +10,9 @@ module.exports = function(country, instance, settings) {
         computed: {
             breakdown: function () {
                 return this.instance.calculate(this.yearlyAmount, this.settings);
+            },
+            selectedCurrencyEqualsCalculatorCurrency: function () {
+                return settings.currency === settings.calculatorCurrency;
             }
         }
     })

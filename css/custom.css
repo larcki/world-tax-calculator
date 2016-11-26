@@ -37,6 +37,10 @@
     border-top: 1px solid #ddd;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .result-title {
     /*border-top: 1px solid #ddd;*/
     /*padding-top: 20px*/

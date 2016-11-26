@@ -63,18 +63,18 @@ describe('UK Tax Calculator', function () {
     });
 
     it('should convert values when currency EUR', function () {
-        let result = calculator.calculate(50000, {nationalInsurance: true, rounding: 0, currency: 'EUR'});
+        let result = calculator.calculate(50000, {nationalInsurance: true, rounding: 0, currency: 'EUR', calculatorCurrency: 'GBP'});
         assert.equal(result.netYear, 37738);
 
-        result = calculator.calculate(100000, {nationalInsurance: true, rounding: 0, currency: 'EUR'});
+        result = calculator.calculate(100000, {nationalInsurance: true, rounding: 0, currency: 'EUR', calculatorCurrency: 'GBP'});
         assert.equal(result.netYear, 66812);
     });
 
     it('should convert values when currency GBP', function () {
-        let result = calculator.calculate(50000, {nationalInsurance: true, rounding: 0, currency: 'GBP'});
+        let result = calculator.calculate(50000, {nationalInsurance: true, rounding: 0, currency: 'GBP', calculatorCurrency: 'GBP'});
         assert.equal(result.netYear, 36468);
 
-        result = calculator.calculate(100000, {nationalInsurance: true, rounding: 0, currency: 'GBP'});
+        result = calculator.calculate(100000, {nationalInsurance: true, rounding: 0, currency: 'GBP', calculatorCurrency: 'GBP'});
         assert.equal(result.netYear, 65468);
     });
 

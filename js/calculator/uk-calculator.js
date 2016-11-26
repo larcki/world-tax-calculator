@@ -2,8 +2,6 @@ var currencyConverter = require("./currency-converter");
 
 module.exports = (function () {
 
-    const currency = 'GBP';
-
     const taxBrackets = new Map([
         [32000, .20],
         [107000, .40],
@@ -23,7 +21,7 @@ module.exports = (function () {
     };
 
     var calculate = function calculate(inputAmount, settings = defaultSettings) {
-        inputAmount = currencyConverter(inputAmount, settings.currency, currency);
+        inputAmount = currencyConverter(inputAmount, settings.currency, settings.calculatorCurrency);
         let grossYear = inputAmount || 0;
         let grossMonth = grossYear / 12;
         let personalAllowance = getPersonalAllowance(grossYear);
@@ -32,7 +30,7 @@ module.exports = (function () {
         let nationalInsurance = settings.nationalInsurance ? getNationalInsurance(grossYear) : 0;
         let netYear = grossYear - incomeTax - nationalInsurance;
         let netMonth = netYear / 12;
-        let totalDeductionRate = netYear / inputAmount;
+        let totalDeductionRate = (netYear / inputAmount - 1) * -1;
 
         return {
             grossYear: convertAndRound(grossYear, settings, settings),
@@ -43,7 +41,7 @@ module.exports = (function () {
             nationalInsurance: convertAndRound(nationalInsurance, settings),
             netYear: convertAndRound(netYear, settings),
             netYearHomeCurrency: round(netYear, settings),
-            totalDeductionRate: totalDeductionRate,
+            totalDeductionRate: round(totalDeductionRate * 100, 1),
             netMonth: convertAndRound(netMonth, settings)
         };
     };
@@ -90,13 +88,13 @@ module.exports = (function () {
     }
 
     function convertAndRound(value, settings) {
-        value = currencyConverter(value, currency, settings.currency);
-        return round(value, settings);
+        value = currencyConverter(value, settings.calculatorCurrency, settings.currency);
+        return round(value, settings.rounding);
     }
 
-    function round(value, settings) {
-        if (settings.rounding !== undefined && settings.rounding != null) {
-            value = value.toFixed(settings.rounding)
+    function round(value, rounding) {
+        if (rounding !== undefined && rounding != null) {
+            value = value.toFixed(rounding)
         }
         return value;
     }
