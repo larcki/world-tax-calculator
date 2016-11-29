@@ -9,7 +9,15 @@ $(document).ready(function () {
         data: {
             year_input: '',
             countries: [],
-            currency: ''
+            currency: '',
+            allowCalculation: false
+        },
+        methods: {
+            calculate: function() {
+                if (this.year_input > 0 && this.countries.length > 0) {
+                    this.allowCalculation= true;
+                }
+            }
         },
         computed: {
             year_input_monthly: {
@@ -26,7 +34,11 @@ $(document).ready(function () {
             },
             results: function () {
                 let tempArray = [];
+                if (!this.allowCalculation) {
+                    return tempArray;
+                }
                 if (this.countries.length === 0 || !this.year_input) {
+                    this.allowCalculation = false;
                     return tempArray;
                 }
                 for (var i in this.countries) {

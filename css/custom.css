@@ -92,7 +92,7 @@
 }
 
 #currency-button {
-    color: gray;
+    color: #9e9e9e;
 }
 
 @media only screen and (max-width: 600px) {
@@ -132,4 +132,42 @@
 
 .collapsible-body {
     background-color: white;
+}
+
+input.select-dropdown {
+    color: #9e9e9e;
+}
+
+/* label focus color */
+.input-field input[type=number]:focus + label {
+    color: #7cb342 !important;
+}
+
+/* label underline focus color */
+.input-field input[type=number]:focus {
+    border-bottom: 1px solid #689f38;
+    box-shadow: 0 1px 0 0 #689f38;
+}
+
+.dropdown-content li > a, .dropdown-content li > span {
+    color: rgba(0, 0, 0, 0.71);
+}
+
+html {
+    color: rgba(0, 0, 0, 0.71);
+}
+
+[type="checkbox"]:checked + label:before {
+    border-right: 2px solid #689f38;
+    border-bottom: 2px solid #689f38;
+}
+
+[type="checkbox"].filled-in:checked + label:after {
+    border: 2px solid #689f38;
+    background-color: #689f38;
+}
+
+#calculate-button {
+    padding-left: 50px;
+    padding-right: 50px;
 }
