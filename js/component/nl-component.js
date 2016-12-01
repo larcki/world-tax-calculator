@@ -9,8 +9,8 @@ module.exports = Vue.extend({
     '<breakdown-row title="Labour Tax Credit" :value="breakdown.labourCredit" ></breakdown-row>' +
     '<breakdown-row title="Income Tax" :value="breakdown.incomeTax" ></breakdown-row>' +
     '<breakdown-row class="border-bottom" title="Total Tax %" :value="breakdown.totalDeductionRate" ></breakdown-row>' +
-    '<breakdown-row v-if="!selectedCurrencyEqualsCalculatorCurrency" title="Net per Year (EUR)" :value="breakdown.netYearHomeCurrency" ></breakdown-row>' +
     '<breakdown-row class="bold" title="Net per Year" :value="breakdown.netYear" ></breakdown-row>' +
+    '<breakdown-row v-if="!selectedCurrencyEqualsCalculatorCurrency" title="Net per Year (EUR)" :value="breakdown.netYearHomeCurrency" ></breakdown-row>' +
     '</div>' +
     '<div class="input-field col s12 m4 l6 offset-l1">' +
     '<div class="row">' +

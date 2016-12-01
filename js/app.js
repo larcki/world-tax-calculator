@@ -7,6 +7,11 @@ const inputTypeTexts = new Map([
     ['MONTH', 'Use Monthly Income?']
 ]);
 
+const currencyCodes = new Map([
+    ['GBP', '\u00A3'],
+    ['EUR', '\u20AC']
+]);
+
 $(document).ready(function () {
 
     var vue = new Vue({
@@ -47,6 +52,9 @@ $(document).ready(function () {
                     $("#year_amount_label").addClass('active');
                     this.year_input = Math.round(newValue * 12);
                 }
+            },
+            displayCurrency : function() {
+                return currencyCodes.get(this.currency);
             },
             results: function () {
                 let tempArray = [];
@@ -106,12 +114,17 @@ $(document).ready(function () {
         accordion: false
     });
     $('.currency-value').click(function() {
-        setCurrency(this.text);
+        for (let [key, value] of currencyCodes) {
+            console.log("key" + key + ", value " + value);
+            if (value === this.text) {
+                setCurrency(key);
+            }
+        }
     });
 
     function setCurrency(currency) {
         vue.currency = currency;
-        $('#currency-button').contents().first()[0].textContent = currency;
+        $('#currency-button').contents().first()[0].textContent = currencyCodes.get(currency);
     }
 
 });
