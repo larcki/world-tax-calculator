@@ -61,7 +61,7 @@ $(document).ready(function () {
                     let country = this.countries[i];
                     var calcInUse = register.get(country).model;
                     calcInUse.yearlyAmount = this.year_input;
-                    //calcInUse.isExpanded = (this.countries.length <= 1);
+                    calcInUse.isExpanded = (this.countries.length <= 1);
                     calcInUse.settings.currency = this.currency;
                     tempArray.push(calcInUse);
                 }
