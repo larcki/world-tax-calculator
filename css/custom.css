@@ -11,6 +11,7 @@
 .collapsible-header {
     padding-left: 0;
     padding-right: 0;
+    font-size: 1.2em;
 }
 
 .logo-first {
@@ -171,3 +172,4 @@ html {
     padding-left: 50px;
     padding-right: 50px;
 }
+

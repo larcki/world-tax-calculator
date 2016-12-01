@@ -2,6 +2,11 @@ require('./component/result-item.js');
 require('./component/breakdown-row.js');
 var register = require('./register.js');
 
+const inputTypeTexts = new Map([
+    ['YEAR', 'Use Annual Income?'],
+    ['MONTH', 'Use Monthly Income?']
+]);
+
 $(document).ready(function () {
 
     var vue = new Vue({
@@ -10,12 +15,23 @@ $(document).ready(function () {
             year_input: '',
             countries: [],
             currency: '',
-            allowCalculation: false
+            allowCalculation: false,
+            useYear: true,
+            inputTypeText: inputTypeTexts.get('MONTH')
         },
         methods: {
             calculate: function() {
                 if (this.year_input > 0 && this.countries.length > 0) {
                     this.allowCalculation= true;
+                }
+            },
+            toggleInputType: function() {
+                if (this.useYear) {
+                    this.useYear = false;
+                    this.inputTypeText = inputTypeTexts.get('YEAR')
+                } else {
+                    this.useYear = true;
+                    this.inputTypeText = inputTypeTexts.get('MONTH')
                 }
             }
         },

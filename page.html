@@ -52,17 +52,23 @@
             <form>
 
                 <div id="year" class="row larger">
-                    <div class="input-field col offset-l3 offset-m3 s12 m6 l6 acc">
+                    <div v-show="useYear" class="input-field col offset-l3 offset-m3 s12 m6 l6">
                         <input v-model="year_input" onclick="select()" id="year_amount" type="number" step=1000>
-                        <label id=year_amount_label for="year_amount">Per year</label>
+                        <label id=year_amount_label for="year_amount">Annual Gross Income</label>
                     </div>
-                    <!--<div class="input-field col s12 m6 l6">-->
-                    <!--<input v-model="year_input_monthly" onclick="select()" id="month_amount" type="number"-->
-                    <!--step=50>-->
-                    <!--<label id="month_amount_label" for="month_amount">Per Month</label>-->
-                    <!--</div>-->
+
+                    <div v-show="!useYear" class="input-field col offset-l3 offset-m3 s12 m6 l6">
+                        <input v-model="year_input_monthly" onclick="select()" id="month_amount" type="number"
+                               step=50>
+                        <label id="month_amount_label" for="month_amount">Monthly Gross Income</label>
+                    </div>
                 </div>
 
+                <div class="row">
+                    <div class="col offset-l3 offset-m3">
+                        <a v-on:click="toggleInputType" href="#" class="light-green-text text-darken-1">{{inputTypeText}}</a>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="input-field col offset-l3 offset-m3 s12 m6 l6">
