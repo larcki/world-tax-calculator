@@ -115,7 +115,6 @@ $(document).ready(function () {
     });
     $('.currency-value').click(function() {
         for (let [key, value] of currencyCodes) {
-            console.log("key" + key + ", value " + value);
             if (value === this.text) {
                 setCurrency(key);
             }
