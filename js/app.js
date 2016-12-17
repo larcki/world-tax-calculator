@@ -19,7 +19,7 @@ $(document).ready(function () {
         el: '#common-input',
         data: {
             year_input: resolveYearInput(urlParameters.parameter('salary')),
-            countries: urlParameters.parameterArray('country'),
+            countries: resolveCountries(urlParameters.parameterArray('country')),
             currency: resolveSafeCurrency(urlParameters.parameter('currency')),
             allowCalculation: false,
             useYear: true,
@@ -110,6 +110,7 @@ $(document).ready(function () {
     $(".dropdown-button").dropdown();
 
     $('select').material_select();
+
     $('.collapsible').collapsible({
         accordion: false
     });
@@ -121,7 +122,6 @@ $(document).ready(function () {
         }
     });
     $('#currency-button').contents().first()[0].textContent = currencyCodes.get(vue.currency);
-
     function changeCurrency(currency) {
         var newCurrency = resolveSafeCurrency(currency);
         vue.currency = newCurrency;
@@ -141,6 +141,18 @@ $(document).ready(function () {
             return '';
         }
         return value;
+    }
+
+    function resolveCountries(countryParamArray) {
+        let results = [];
+        for (var i in countryParamArray) {
+            var countryUpperCase = countryParamArray[i].toUpperCase();
+            var country = register.get(countryUpperCase);
+            if (country != null) {
+                results.push(countryUpperCase);
+            }
+        }
+        return results;
     }
 
 });
