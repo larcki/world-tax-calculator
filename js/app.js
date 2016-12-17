@@ -21,7 +21,7 @@ $(document).ready(function () {
             year_input: resolveYearInput(urlParameters.parameter('salary')),
             countries: resolveCountries(urlParameters.parameterArray('country')),
             currency: resolveSafeCurrency(urlParameters.parameter('currency')),
-            allowCalculation: false,
+            allowCalculation: resolveBoolean(urlParameters.parameter('calculate')),
             useYear: true,
             inputTypeText: inputTypeTexts.get('MONTH')
         },
@@ -153,6 +153,10 @@ $(document).ready(function () {
             }
         }
         return results;
+    }
+
+    function resolveBoolean(parameter) {
+        return parameter === 'true';
     }
 
 });
