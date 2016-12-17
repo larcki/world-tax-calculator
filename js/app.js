@@ -1,6 +1,7 @@
 require('./component/result-item.js');
 require('./component/breakdown-row.js');
 var register = require('./register.js');
+var urlParameters = require('./url-parameters.js');
 
 const inputTypeTexts = new Map([
     ['YEAR', 'Use Annual Income?'],
@@ -17,9 +18,9 @@ $(document).ready(function () {
     var vue = new Vue({
         el: '#common-input',
         data: {
-            year_input: '',
-            countries: [],
-            currency: '',
+            year_input: resolveYearInput(urlParameters.parameter('salary')),
+            countries: urlParameters.parameterArray('country'),
+            currency: resolveSafeCurrency(urlParameters.parameter('currency')),
             allowCalculation: false,
             useYear: true,
             inputTypeText: inputTypeTexts.get('MONTH')
@@ -27,7 +28,7 @@ $(document).ready(function () {
         methods: {
             calculate: function() {
                 if (this.year_input > 0 && this.countries.length > 0) {
-                    this.allowCalculation= true;
+                    this.allowCalculation = true;
                 }
             },
             toggleInputType: function() {
@@ -79,8 +80,6 @@ $(document).ready(function () {
 
     });
 
-    setCurrency('GBP')
-
     $('#country-select').change(function() {
         var newCountries = $("#country-select option:selected");
 
@@ -109,6 +108,7 @@ $(document).ready(function () {
     });
 
     $(".dropdown-button").dropdown();
+
     $('select').material_select();
     $('.collapsible').collapsible({
         accordion: false
@@ -116,14 +116,31 @@ $(document).ready(function () {
     $('.currency-value').click(function() {
         for (let [key, value] of currencyCodes) {
             if (value === this.text) {
-                setCurrency(key);
+                changeCurrency(key);
             }
         }
     });
+    $('#currency-button').contents().first()[0].textContent = currencyCodes.get(vue.currency);
 
-    function setCurrency(currency) {
-        vue.currency = currency;
-        $('#currency-button').contents().first()[0].textContent = currencyCodes.get(currency);
+    function changeCurrency(currency) {
+        var newCurrency = resolveSafeCurrency(currency);
+        vue.currency = newCurrency;
+        $('#currency-button').contents().first()[0].textContent = currencyCodes.get(newCurrency);
+    }
+
+    function resolveSafeCurrency(currency) {
+        if (currency == null || currencyCodes.get(currency.toUpperCase()) == null) {
+            return currencyCodes.keys[0];
+        }
+        return currency.toUpperCase();
+    }
+
+    function resolveYearInput(salary) {
+        var value = Number(salary);
+        if (value === 0) {
+            return '';
+        }
+        return value;
     }
 
 });

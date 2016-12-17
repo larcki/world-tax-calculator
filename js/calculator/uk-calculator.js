@@ -31,9 +31,8 @@ module.exports = (function () {
         let netYear = grossYear - incomeTax - nationalInsurance;
         let netMonth = netYear / 12;
         let totalDeductionRate = (netYear / inputAmount - 1) * -1;
-
         return {
-            grossYear: convertAndRound(grossYear, settings, settings),
+            grossYear: convertAndRound(grossYear, settings),
             grossMonth: convertAndRound(grossMonth, settings),
             taxableYear: convertAndRound(taxableYear, settings),
             personalAllowance: convertAndRound(personalAllowance, settings),
