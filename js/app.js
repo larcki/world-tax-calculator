@@ -130,7 +130,7 @@ $(document).ready(function () {
 
     function resolveSafeCurrency(currency) {
         if (currency == null || currencyCodes.get(currency.toUpperCase()) == null) {
-            return currencyCodes.keys[0];
+            return 'GBP'
         }
         return currency.toUpperCase();
     }
